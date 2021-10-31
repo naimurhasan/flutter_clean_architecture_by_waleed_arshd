@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:waleed_clean_arch_1/abstractions/user_repository.dart';
 import 'package:waleed_clean_arch_1/entities/user_domain.dart';
 import 'package:waleed_clean_arch_1/restapi_user_repository.dart';
 
 
+final getIt = GetIt.instance;
 
+void setupGetIt() {
+  getIt.registerLazySingleton<UserRepository>(() => RestApiUserRepository());
+}
 
 void main() {
+  setupGetIt();
   runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -19,16 +26,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page', userRepository: RestApiUserRepository(),),
+      home: MyHomePage(title: 'Flutter Demo Home Page', userRepository: getIt<UserRepository>(),),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title,required this.userRepository}) : super(key: key);
+  MyHomePage({Key? key, required this.title, required this.userRepository,}) : super(key: key);
 
   final String title;
   final UserRepository userRepository;
+
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
