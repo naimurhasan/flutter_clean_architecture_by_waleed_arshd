@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:waleed_clean_arch_1/entities/user_domain.dart';
 import 'package:waleed_clean_arch_1/user_json.dart';
 import 'package:waleed_clean_arch_1/user_model.dart';
 
@@ -34,7 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   UserModel userModel = UserModel();
-  List<UserJson> users = [];
+  List<UserDomain> users = [];
 
   fetchUser() async{
     users = await userModel.getUsers();

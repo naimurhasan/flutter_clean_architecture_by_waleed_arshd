@@ -1,8 +1,10 @@
+import 'package:waleed_clean_arch_1/entities/user_domain.dart';
+
 class UserJson {
   int id;
   String name;
   String? username;
-  String? email;
+  String email;
   String? phone;
   String? website;
 
@@ -10,7 +12,7 @@ class UserJson {
       {required this.id,
         required this.name,
         this.username,
-        this.email,
+        required this.email,
         this.phone,
         this.website});
 
@@ -28,4 +30,7 @@ class UserJson {
     data['website'] = this.website;
     return data;
   }
+
+  UserDomain toDomain() => UserDomain(id: this.id, name: this.name, email: this.email);
+
 }
