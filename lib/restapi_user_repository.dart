@@ -1,12 +1,13 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
+import 'package:waleed_clean_arch_1/abstractions/user_repository.dart';
+import 'package:waleed_clean_arch_1/entities/user_domain.dart';
 import 'package:waleed_clean_arch_1/user_json.dart';
+import 'package:http/http.dart' as http;
 
-import 'entities/user_domain.dart';
-class UserModel {
+class RestApiUserRepository implements UserRepository{
 
+  @override
   Future<List<UserDomain>> getUsers() async{
     List<UserJson> users = [];
     List<UserDomain> userDomains = [];
@@ -18,4 +19,5 @@ class UserModel {
 
     return (json.decode(response.body) as List).map((e) => UserJson.fromJson(e).toDomain()).toList();
   }
+
 }
