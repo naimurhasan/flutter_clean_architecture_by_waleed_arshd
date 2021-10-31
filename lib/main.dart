@@ -1,13 +1,21 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:waleed_clean_arch_1/user_json.dart';
-import 'package:waleed_clean_arch_1/user_model.dart';
+import 'package:get_it/get_it.dart';
+import 'package:waleed_clean_arch_1/abstractions/user_repository.dart';
+import 'package:waleed_clean_arch_1/entities/user_domain.dart';
+import 'package:waleed_clean_arch_1/restapi_user_repository.dart';
+
+
+final getIt = GetIt.instance;
+
+void setupGetIt() {
+  getIt.registerLazySingleton<UserRepository>(() => RestApiUserRepository());
+}
 
 void main() {
+  setupGetIt();
   runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -18,26 +26,29 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page', userRepository: getIt<UserRepository>(),),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title, required this.userRepository,}) : super(key: key);
 
   final String title;
+  final UserRepository userRepository;
+
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  UserModel userModel = UserModel();
-  List<UserJson> users = [];
+  late UserRepository userRepository;
+  List<UserDomain> users = [];
 
   fetchUser() async{
-    users = await userModel.getUsers();
+    userRepository = widget.userRepository;
+    users = await userRepository.getUsers();
     setState(() {});
   }
 
